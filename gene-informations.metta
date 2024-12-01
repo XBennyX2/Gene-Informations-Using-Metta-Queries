@@ -1053,4 +1053,12 @@
 (synonyms (gene ENSG00000205116) (transmembrane_protein_88B TMEM88B HGNC:37099))
 (source (gene ENSG00000205116) GENCODE)
 (source_url (gene ENSG00000205116) https://www.gencodegenes.org/human/)
-! (match &self ($x (gene ENSG00000205116) $c) $c)
+
+ ; ! (match &self ($x (gene ENSG00000205116) $c) $x)
+ ; ! (match &self ($x (gene ENSG00000205116) $c) $c)
+
+ ; To fetch the data related to specific gene
+ ; ! (match &self ($relation (gene ENSG00000205116 ) $value) ($relation $value))
+
+ ; Query for Transcripts Related to a Gene
+! (match &self (transcribed_to (gene ENSG00000243485) $transcript) $transcript)
