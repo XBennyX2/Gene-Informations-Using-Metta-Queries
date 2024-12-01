@@ -1062,3 +1062,6 @@
 
  ; Query for Transcripts Related to a Gene
 ! (match &self (transcribed_to (gene ENSG00000243485) $transcript) $transcript)
+ ;! (match &self ($x (gene ENSG00000205116) $c) $x)
+ ;! (match &self ($x (gene ENSG00000205116) $c) $c)
+! (match &self ($relation (gene ENSG00000205116 ) $value) ($relation $value))
