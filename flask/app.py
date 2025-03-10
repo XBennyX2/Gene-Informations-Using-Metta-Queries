@@ -58,13 +58,14 @@ def hello():
 
             # Query the gene data
             result = query_gene_data(gene_id)
+        
 
             if not result or not result[0]:
                 return jsonify({"error": "Gene ID not found"}), 404
+            
 
-            # Format the result into a dictionary
-            gene_info = {str(r[0]): str(r[1]) for r in result[0]}  # Convert pairs to a dictionary
-            return jsonify({"gene_id": gene_id, **gene_info})
+
+            return jsonify({"gene_id": gene_id,"result": result})
 
         except Exception as e:
             return jsonify({"error": str(e)}), 500

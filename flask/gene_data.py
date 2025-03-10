@@ -1,4 +1,4 @@
-from hyperon import MeTTa, S, V, E
+from hyperon import MeTTa
 
 # Create a MeTTa runner instance
 metta = MeTTa()
@@ -1064,20 +1064,39 @@ metta.run('''
     
 ''')
 
-# Query to find all relationships and values for a specific gene ID
-gene_id = input("Enter the Genr ID:").strip()
-query = f'!(match &self ($relationship (gene {gene_id}) $value) (Pair $relationship $value))'
-
-# Run the query
-result = metta.run(query)
-
-# Print the results
-for r in result[0]:  # Each result is a Pair (relationship, value)
-    print(r)
-
     
 def query_gene_data(gene_id):
-    # Query to find all relationships and values for a specific gene ID
+    # Build the MeTTa query string
     query = f'!(match &self ($relationship (gene {gene_id}) $value) (Pair $relationship $value))'
     result = metta.run(query)
-    return result
+    
+    # Debug print: inspect raw result
+    print("Raw result:", result)
+    
+    # Convert the entire result to a JSON-compatible structure.
+    converted = metta_to_json_compatible(result)
+    return converted
+
+
+def metta_to_json_compatible(atom):
+    """
+    Recursively converts a MeTTa atom (or a nested structure of atoms)
+    into a JSON-serializable structure (using strings, lists, and dicts).
+    """
+    # If the atom has a 'to_str' method, use it.
+    try:
+        # Attempt to call the to_str method if it exists.
+        return atom.to_str()
+    except Exception:
+        pass
+
+    # If it's a list, process each element.
+    if isinstance(atom, list):
+        return [metta_to_json_compatible(item) for item in atom]
+    
+    # If it's a dict, process keys and values.
+    if isinstance(atom, dict):
+        return {str(key): metta_to_json_compatible(value) for key, value in atom.items()}
+
+    # Fallback: convert using str()
+    return str(atom)
