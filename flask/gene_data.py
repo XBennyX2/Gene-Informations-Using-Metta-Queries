@@ -1083,7 +1083,6 @@ def metta_to_json_compatible(atom):
     Recursively converts a MeTTa atom (or a nested structure of atoms)
     into a JSON-serializable structure (using strings, lists, and dicts).
     """
-    # If the atom has a 'to_str' method, use it.
     try:
         # Attempt to call the to_str method if it exists.
         return atom.to_str()
@@ -1098,5 +1097,4 @@ def metta_to_json_compatible(atom):
     if isinstance(atom, dict):
         return {str(key): metta_to_json_compatible(value) for key, value in atom.items()}
 
-    # Fallback: convert using str()
     return str(atom)

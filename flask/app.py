@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request, render_template_string
 from hyperon import MeTTa
-import json
 from gene_data import query_gene_data
 
 # Initialize MeTTa
@@ -9,17 +8,6 @@ metta = MeTTa()
 # Create Flask app
 app = Flask(__name__)
 
-# Define custom serialization function to handle non-serializable objects
-def serialize_result(result):
-    if isinstance(result, str):
-        return result
-    elif hasattr(result, '__dict__'):
-        return str(result)
-    elif isinstance(result, list):
-        return [serialize_result(item) for item in result]
-    elif isinstance(result, dict):
-        return {key: serialize_result(value) for key, value in result.items()}
-    return result
 
 @app.route('/', methods=['GET', 'POST'])
 def hello():
